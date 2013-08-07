@@ -1,0 +1,98 @@
+<% include common/header %>
+<% include common/menu %>
+
+<script type='text/javascript'>
+
+    var currentAdviceId = '';
+
+    $(document).ready(function () {
+        $('#likebtn').click(function () {
+            $('#likeDialog').modal('hide') ;
+            // add like
+
+            $.get('like', {type:'like', id:currentAdviceId}).done(function(){
+                console.log('add like success');
+            });
+
+        });
+        $('#dislikebtn').click(function () {
+            $('#likeDialog').modal('hide');
+            // add dislike
+            $.get('like', {type:'dislike', id:currentAdviceId}).done(function(){
+                console.log('add dislike success');
+            });
+
+        });
+    });
+
+    /**
+     * if like button will be default
+     * else dislike button will be default
+     * @param like
+     * @param aid
+     */
+    function showLikeDialog( like , aid) {
+
+        currentAdviceId = aid;
+        console.log('reset advice id to:' + aid);
+
+        if( like ) {
+            $('#likebtn').addClass('btn-primary');
+            $('#dislikebtn').removeClass('btn-primary');
+        } else {
+            $('#likebtn').removeClass('btn-primary');
+            $('#dislikebtn').addClass('btn-primary');
+        }
+        $('#likeDialog').modal('show');
+    }
+
+
+</script>
+
+
+
+<table class="table table-hover">
+
+    <thead>
+        <tr>
+            <td>分类</td>
+            <td>建议</td>
+            <td>描述</td>
+            <td>喜欢</td>
+            <td>拍砖</td>
+
+        </tr>
+
+    </thead>
+    <tbody>
+        <% datas.forEach(function(advice){ %>
+            <tr>
+                <td> <%= advice.category %> </td>
+                <td> <%= advice.title %> </td>
+                <td> <%= advice.desc %> </td>
+                <td> 113 <a href='#' onclick=' showLikeDialog(true,  "<%= advice._id %>") '>顶</a></td>
+                <td> 21  <a href='#' onclick=' showLikeDialog(false, "<%= advice._id %>") '>拍</a></td>
+
+            </tr>
+        <% }) %>
+    </tbody>
+
+</table>
+
+<div id='likeDialog' class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>你来决定</h3>
+    </div>
+    <div class="modal-body">
+        <p>顶：提升问题的优先级，获得让更多人看到的机会。</p>
+        <p>顶：降低问题的优先级，减少让更多人看到的机会。</p>
+    </div>
+    <div class="modal-footer">
+        <a id='likebtn'    href="#" class="btn">我要顶</a>
+        <a id='dislikebtn' href="#" class="btn">我要拍</a>
+    </div>
+</div>
+
+
+<% include common/footer %>

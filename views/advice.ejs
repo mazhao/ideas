@@ -1,0 +1,78 @@
+<% include common/header %>
+<% include common/menu %>
+
+<script type='text/javascript'>
+
+    function checkForm() {
+
+        console.log('check form fields');
+
+        var title = $('#title').val();
+        var desc = $('#desc').val();
+
+        if (title != '' && desc != '') {
+            console.log('check ok');
+
+            $('#submitAdvice').removeAttr('disabled');
+            $('#submitAdvice').addClass('btn-primary');
+
+        } else {
+            console.log('check failed');
+            $('#submitAdvice').attr('disabled', 'disabled');
+            $('#submitAdvice').removeClass('btn-primary');
+
+        }
+
+
+    }
+
+    $(document).ready(function () {
+        $('#title').keyup(checkForm);
+        $('#desc').keyup(checkForm);
+
+
+    });
+
+</script>
+
+<div class='well well-large'>
+
+    <form id=“formAdvice” class="form-horizontal" action="/advice" method="post">
+        <div class="control-group">
+            <label class="control-label" for="category">分类</label>
+
+            <div class="controls">
+                <select id='category' name='category' class='span5'>
+                    <option>运营建议</option>
+                    <option>产品建议</option>
+                    <option>类目建设</option>
+                    <option>其他</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="title">建议</label>
+
+            <div class="controls">
+                <input type="text" id="title" name="title" class='span5' data-rule-required="true">
+                <span class="help-block">请用一句话说清楚您的建议！</span>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="desc">描述</label>
+
+            <div class="controls">
+                <textarea rows="10" id="desc" name="desc" class='span5' data-rule-required="true"></textarea>
+                <span class="help-block">请详细描述您的建议！</span>
+
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" id="submitAdvice" class="btn btn-large" disabled>提建议</button>
+            </div>
+        </div>
+    </form>
+</div>
+<% include common/footer %>
